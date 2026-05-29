@@ -3,7 +3,9 @@
 A fully functional, production‑ready **Car Rental Booking Website** built using the **MERN Stack (MongoDB, Express.js, React.js, Node.js)** with **ImageKit** integration for media storage.
 
 ---
+![alt text](image.png)
 
+![alt text](image-1.png)
 ## 🚀 Features
 
 ### 👤 **User Features**
@@ -21,6 +23,10 @@ A fully functional, production‑ready **Car Rental Booking Website** built usin
 * Add new cars
 * Manage all bookings
 * Manage car inventory including images
+
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-4.png)
 
 ### 🖼️ **Image Handling**
 
