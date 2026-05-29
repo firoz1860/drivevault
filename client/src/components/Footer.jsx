@@ -16,12 +16,13 @@ const Footer = () => {
         className="flex flex-wrap justify-between items-start gap-10 pb-10 border-b border-borderColor"
       >
         <div className="max-w-sm">
-          <motion.img
-            {...fadeUp(0.2)}
-            src={assets.logo}
-            alt="DriveVault"
-            className="h-9 mb-3"
-          />
+          <motion.div {...fadeUp(0.2)} className="logo-3d-shell inline-flex rounded-xl px-1 py-1 mb-3">
+            <img
+              src={assets.logo}
+              alt="DriveVault"
+              className="logo-3d-mark h-9 w-auto"
+            />
+          </motion.div>
 
           <motion.p {...fadeUp(0.3)} className="leading-relaxed">
             DriveVault is a premium mobility platform with a wide selection of luxury and

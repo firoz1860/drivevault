@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Title from '../../components/owner/Title'
-import { useAppContext } from '../../context/AppContext'
+import { useAppContext } from '../../context/useAppContext'
 import toast from 'react-hot-toast'
 
 const ManageBookings = () => {

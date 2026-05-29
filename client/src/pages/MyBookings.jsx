@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import Title from '../components/Title'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
 
@@ -12,7 +12,7 @@ const MyBookings = () => {
 
   const getExtraDayCost = (booking) => Math.round(Number(booking.car.pricePerDay || 0) * 1.15)
 
-  const fetchMyBookings = async ()=> {
+  const fetchMyBookings = useCallback(async ()=> {
     try {
       const { data } = await axios.get('/api/bookings/user')
       if (data.success){
@@ -23,11 +23,11 @@ const MyBookings = () => {
     } catch (error) {
       toast.error(error.message)
     }
-  }
+  }, [axios])
 
   useEffect(()=>{
     user && fetchMyBookings()
-  },[user])
+  },[user, fetchMyBookings])
 
   return (
     <motion.div

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { cityList } from '../assets/assets'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 import CarModelViewer, { DEFAULT_CAR_MODEL } from './CarModelViewer'
 
 const tripProfiles = {

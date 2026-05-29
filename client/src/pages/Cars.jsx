@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import CarCard from '../components/CarCard'
 import { useSearchParams } from 'react-router-dom'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
 import MapLocationPanel from '../components/MapLocationPanel'
@@ -28,7 +28,7 @@ const Cars = () => {
   const isSearchData = pickupLocation && pickupDate && returnDate
   const [filteredCars, setFilteredCars] = useState([])
 
-  const applyFilter = async ()=>{
+  const applyFilter = useCallback(()=>{
      
     const filtered = cars.slice().filter((car)=>{
       const matchesText = car.brand.toLowerCase().includes(input.toLowerCase())
@@ -44,7 +44,7 @@ const Cars = () => {
       return matchesText && matchesCategory && matchesFuel && matchesTransmission && matchesPrice && matchesSaved
     })
     setFilteredCars(filtered)
-  }
+  }, [cars, category, fuelType, input, maxPrice, savedOnly, transmission, wishlist])
 
   const toggleCompare = (car) => {
     setCompareCars((prev) => {
@@ -55,7 +55,7 @@ const Cars = () => {
     })
   }
 
-  const searchCarAvailablity = async () =>{
+  const searchCarAvailablity = useCallback(async () =>{
     const {data} = await axios.post('/api/bookings/check-availability', {location: pickupLocation, pickupDate, returnDate})
     if (data.success) {
       setFilteredCars(data.availableCars)
@@ -64,15 +64,19 @@ const Cars = () => {
       }
       return null
     }
-  }
+  }, [axios, pickupDate, pickupLocation, returnDate])
 
   useEffect(()=>{
-    isSearchData && searchCarAvailablity()
-  },[])
+    if (isSearchData) {
+      searchCarAvailablity()
+    }
+  },[isSearchData, searchCarAvailablity])
 
   useEffect(()=>{
-    cars.length > 0 && !isSearchData && applyFilter()
-  },[input, cars, category, fuelType, transmission, maxPrice, savedOnly, wishlist])
+    if (cars.length > 0 && !isSearchData) {
+      applyFilter()
+    }
+  },[applyFilter, cars.length, isSearchData])
 
   return (
     <div>

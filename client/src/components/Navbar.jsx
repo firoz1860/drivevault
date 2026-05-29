@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { assets, menuLinks } from '../assets/assets'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 import toast from 'react-hot-toast'
 import {motion} from 'motion/react'
 
@@ -34,8 +34,8 @@ const Navbar = () => {
     transition={{duration: 0.5}}
     className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor relative transition-all ${location.pathname === "/" && "bg-light"}`}>
 
-        <Link to='/'>
-            <motion.img whileHover={{scale: 1.05}} src={assets.logo} alt="DriveVault" className="h-8"/>
+        <Link to='/' className="logo-3d-shell inline-flex items-center rounded-xl px-1 py-1">
+            <motion.img whileHover={{scale: 1.05}} src={assets.logo} alt="DriveVault" className="logo-3d-mark h-8 w-auto"/>
         </Link>
 
         <div className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 max-sm:border-t border-borderColor right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-4 transition-all duration-300 z-50 ${location.pathname === "/" ? "bg-light" : "bg-white"} ${open ? "max-sm:translate-x-0" : "max-sm:translate-x-full"}`}>
@@ -54,7 +54,7 @@ const Navbar = () => {
 
                 <button onClick={()=> isOwner ? navigate('/owner') : changeRole()} className="cursor-pointer">{isOwner ? 'Dashboard' : 'List cars'}</button>
 
-                <button onClick={()=> {user ? logout() : setShowLogin(true)}} className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-lg">{user ? 'Logout' : 'Login'}</button>
+                <button onClick={()=> {user ? logout() : setShowLogin(true)}} className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-[#080A0F] rounded-lg font-medium">{user ? 'Logout' : 'Login'}</button>
             </div>
         </div>
 

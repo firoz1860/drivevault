@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { assets, ownerMenuLinks } from '../../assets/assets'
 import { NavLink, useLocation } from 'react-router-dom';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/useAppContext';
 import toast from 'react-hot-toast';
 
 const Sidebar = () => {

@@ -1,11 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "./appContext";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
-
-export const AppContext = createContext();
 
 export const AppProvider = ({ children })=>{
 
@@ -23,7 +22,7 @@ export const AppProvider = ({ children })=>{
     const [cars, setCars] = useState([])
 
     // Function to check if user is logged in
-    const fetchUser = async ()=>{
+    const fetchUser = useCallback(async ()=>{
         try {
            const {data} = await axios.get('/api/user/data')
            if (data.success) {
@@ -35,17 +34,17 @@ export const AppProvider = ({ children })=>{
         } catch (error) {
             toast.error(error.message)
         }
-    }
+    }, [navigate])
     // Function to fetch all cars from the server
 
-    const fetchCars = async () =>{
+    const fetchCars = useCallback(async () =>{
         try {
             const {data} = await axios.get('/api/user/cars')
             data.success ? setCars(data.cars) : toast.error(data.message)
         } catch (error) {
             toast.error(error.message)
         }
-    }
+    }, [])
 
     // Function to log out the user
     const logout = ()=>{
@@ -73,7 +72,7 @@ export const AppProvider = ({ children })=>{
         setToken(token)
         setWishlist(savedWishlist)
         fetchCars()
-    },[])
+    },[fetchCars])
 
     // useEffect to fetch user data when token is available
     useEffect(()=>{
@@ -81,7 +80,7 @@ export const AppProvider = ({ children })=>{
             axios.defaults.headers.common['Authorization'] = `${token}`
             fetchUser()
         }
-    },[token])
+    },[token, fetchUser])
 
     const value = {
         navigate, currency, axios, user, setUser,
@@ -96,6 +95,3 @@ export const AppProvider = ({ children })=>{
     )
 }
 
-export const useAppContext = ()=>{
-    return useContext(AppContext)
-}

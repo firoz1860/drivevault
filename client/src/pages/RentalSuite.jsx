@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import Title from '../components/Title'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 
 const actionCards = [
   'Email notifications',

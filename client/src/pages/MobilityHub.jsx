@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import Title from '../components/Title'
 import CarModelViewer from '../components/CarModelViewer'
-import { useAppContext } from '../context/AppContext'
+import { useAppContext } from '../context/useAppContext'
 
 const checklistFields = [
   ['licenseUploaded', 'License'],
@@ -28,7 +28,7 @@ const MobilityHub = () => {
   const radarCars = useMemo(() => hub?.radarCars || [], [hub])
   const booking = useMemo(() => bookings.find((item) => item._id === activeBooking) || bookings[0], [activeBooking, bookings])
 
-  const fetchHub = async () => {
+  const fetchHub = useCallback(async () => {
     if (!user) return
     const {data} = await axios.get('/api/advanced/experience-hub')
     if (data.success) {
@@ -37,7 +37,7 @@ const MobilityHub = () => {
     } else {
       toast.error(data.message)
     }
-  }
+  }, [axios, user])
 
   const call = async (type) => {
     if (!booking && !['compare'].includes(type)) return toast.error('Create a booking first')
@@ -66,7 +66,7 @@ const MobilityHub = () => {
 
   useEffect(() => {
     fetchHub()
-  }, [user])
+  }, [fetchHub])
 
   if (!user) {
     return (

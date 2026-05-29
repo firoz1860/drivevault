@@ -12,3 +12,21 @@
   --color-light: #F1F5F9;
   --color-borderColor: #c4c7d2;
 }
+
+@layer utilities {
+  .logo-3d-shell {
+    perspective: 1000px;
+  }
+
+  .logo-3d-mark {
+    transform-style: preserve-3d;
+    transition: transform 420ms ease, filter 420ms ease;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .logo-3d-shell:hover .logo-3d-mark {
+    transform: rotateX(12deg) rotateY(24deg) rotateZ(-2deg) translateY(-1px) scale(1.02);
+    filter: drop-shadow(0 12px 18px rgba(8, 10, 15, 0.2));
+  }
+}

@@ -16,7 +16,7 @@ import RentalSuite from './pages/RentalSuite'
 import MobilityHub from './pages/MobilityHub'
 import Login from './components/Login'
 import { Toaster } from 'react-hot-toast'
-import { useAppContext } from './context/AppContext'
+import { useAppContext } from './context/useAppContext'
 
 const App = () => {
 
