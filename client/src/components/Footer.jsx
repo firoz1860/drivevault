@@ -1,6 +1,7 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -52,15 +53,10 @@ const Footer = () => {
               Quick Links
             </h2>
             <ul className="mt-4 flex flex-col gap-2">
-              {["Home", "Browse Cars", "List Your Car", "About Us"].map(
-                (item) => (
-                  <li key={item}>
-                    <a className="hover:text-gray-700 transition" href="#">
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              <li><Link className="hover:text-gray-700 transition" to="/">Home</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/cars">Browse Cars</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/owner/add-car">List Your Car</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/about">About Us</Link></li>
             </ul>
           </div>
 
@@ -69,15 +65,10 @@ const Footer = () => {
               Resources
             </h2>
             <ul className="mt-4 flex flex-col gap-2">
-              {["Help Center", "Terms of Service", "Privacy Policy", "Insurance"].map(
-                (item) => (
-                  <li key={item}>
-                    <a className="hover:text-gray-700 transition" href="#">
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              <li><Link className="hover:text-gray-700 transition" to="/help-center">Help Center</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/terms">Terms of Service</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/privacy">Privacy Policy</Link></li>
+              <li><Link className="hover:text-gray-700 transition" to="/insurance">Insurance</Link></li>
             </ul>
           </div>
 
@@ -86,10 +77,10 @@ const Footer = () => {
               Contact
             </h2>
             <ul className="mt-4 flex flex-col gap-2">
-              <li>1234 Luxury Drive</li>
-              <li>San Francisco, CA 94107</li>
-              <li>+1 234 567890</li>
-              <li>info@example.com</li>
+              <li><a className="hover:text-gray-700 transition" href="https://www.google.com/maps?q=1234+Luxury+Drive,+San+Francisco,+CA+94107" target="_blank" rel="noreferrer">1234 Luxury Drive</a></li>
+              <li><Link className="hover:text-gray-700 transition" to="/contact">San Francisco, CA 94107</Link></li>
+              <li><a className="hover:text-gray-700 transition" href="tel:+1234567890">+1 234 567890</a></li>
+              <li><a className="hover:text-gray-700 transition" href="mailto:mepersonalfiroz@gmail.com">mepersonalfiroz@gmail.com</a></li>
             </ul>
           </div>
         </motion.div>
@@ -105,9 +96,11 @@ const Footer = () => {
           {["Privacy", "Terms", "Cookies"].map((item, i) => (
             <React.Fragment key={item}>
               <li>
-                <a className="hover:text-gray-800 transition" href="#">
+                <Link className="hover:text-gray-800 transition" to={
+                  item === 'Privacy' ? '/privacy' : item === 'Terms' ? '/terms' : '/cookies'
+                }>
                   {item}
-                </a>
+                </Link>
               </li>
               {i < 2 && <span>|</span>}
             </React.Fragment>

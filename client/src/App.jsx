@@ -14,6 +14,7 @@ import ManageBookings from './pages/owner/ManageBookings'
 import OperationsCenter from './pages/owner/OperationsCenter'
 import RentalSuite from './pages/RentalSuite'
 import MobilityHub from './pages/MobilityHub'
+import InfoPage from './pages/InfoPage'
 import Login from './components/Login'
 import { Toaster } from 'react-hot-toast'
 import { useAppContext } from './context/useAppContext'
@@ -37,6 +38,13 @@ const App = () => {
       <Route path='/my-bookings' element={<MyBookings/>}/>
       <Route path='/rental-suite' element={<RentalSuite/>}/>
       <Route path='/mobility-hub' element={<MobilityHub/>}/>
+      <Route path='/about' element={<InfoPage page='about'/>}/>
+      <Route path='/help-center' element={<InfoPage page='help'/>}/>
+      <Route path='/terms' element={<InfoPage page='terms'/>}/>
+      <Route path='/privacy' element={<InfoPage page='privacy'/>}/>
+      <Route path='/cookies' element={<InfoPage page='cookies'/>}/>
+      <Route path='/insurance' element={<InfoPage page='insurance'/>}/>
+      <Route path='/contact' element={<InfoPage page='contact'/>}/>
       <Route path='/owner' element={<Layout />}>
         <Route index element={<Dashboard />}/>
         <Route path="add-car" element={<AddCar />}/>
