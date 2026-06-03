@@ -10,6 +10,12 @@ const generateToken = (userId)=>{
     return jwt.sign(payload, process.env.JWT_SECRET)
 }
 
+const guestUser = {
+    name: "Guest User",
+    email: "guest@drivevault.demo",
+    password: "guest-demo-password",
+}
+
 // Register User
 export const registerUser = async (req, res)=>{
     try {
@@ -71,6 +77,35 @@ export const getCars = async (req, res) =>{
     try {
         const cars = await Car.find({isAvaliable: true})
         res.json({success: true, cars})
+    } catch (error) {
+        console.log(error.message);
+        res.json({success: false, message: error.message})
+    }
+}
+
+// Login as a reusable demo user for visitors who want to try the project
+export const guestLoginUser = async (req, res)=>{
+    try {
+        let user = await User.findOne({email: guestUser.email})
+
+        if(!user){
+            const hashedPassword = await bcrypt.hash(guestUser.password, 10)
+            user = await User.create({
+                name: guestUser.name,
+                email: guestUser.email,
+                password: hashedPassword,
+                role: "user",
+                verification: {
+                    email: true,
+                    phone: false,
+                    documents: false,
+                    bank: false,
+                },
+            })
+        }
+
+        const token = generateToken(user._id.toString())
+        res.json({success: true, token})
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message})

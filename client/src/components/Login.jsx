@@ -31,6 +31,24 @@ const Login = () => {
         
     }
 
+    const guestLoginHandler = async ()=>{
+        try {
+            const {data} = await axios.post('/api/user/guest-login')
+
+            if (data.success) {
+                navigate('/')
+                setToken(data.token)
+                localStorage.setItem('token', data.token)
+                setShowLogin(false)
+                toast.success('Logged in as guest')
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
   return (
     <div onClick={()=> setShowLogin(false)} className='fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center text-sm text-gray-600 bg-black/50'>
 
@@ -64,6 +82,22 @@ const Login = () => {
             <button className="bg-primary hover:bg-primary-dull transition-all text-[#080A0F] w-full py-2 rounded-md cursor-pointer font-medium">
                 {state === "register" ? "Create Account" : "Login"}
             </button>
+            {state === "login" && (
+                <>
+                    <div className="flex items-center gap-3 w-full">
+                        <span className="h-px flex-1 bg-gray-200"></span>
+                        <span className="text-xs text-gray-400">or</span>
+                        <span className="h-px flex-1 bg-gray-200"></span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={guestLoginHandler}
+                        className="border border-primary text-primary hover:bg-primary/10 transition-all w-full py-2 rounded-md cursor-pointer font-medium"
+                    >
+                        Continue as Guest
+                    </button>
+                </>
+            )}
         </form>
     </div>
   )
