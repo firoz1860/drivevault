@@ -92,7 +92,7 @@ const Hero = () => {
               <div className='p-4'><p className='text-white/40'>Map</p><p className='font-semibold'>Nearby</p></div>
             </div>
           </div>
-        <MapLocationPanel location={pickupLocation || heroCar?.location || 'New York'} cars={cars} compact />
+        <MapLocationPanel location={pickupLocation || heroCar?.location || 'New Delhi'} cars={cars} compact />
       </motion.div>
       </div>
     </motion.div>

@@ -288,7 +288,7 @@ const OperationsCenter = () => {
         <section className='border border-borderColor rounded-md p-5 bg-white shadow-sm'>
           <h2 className='text-lg font-medium'>Live Fleet Map</h2>
           <div className='mt-4'>
-            <MapLocationPanel location={selectedCarRecord?.lastKnownLocation?.address || operations?.liveLocations?.[0]?.location || 'New York'} cars={operations?.liveLocations || []} />
+            <MapLocationPanel location={selectedCarRecord?.lastKnownLocation?.address || operations?.liveLocations?.[0]?.location || 'New Delhi'} cars={operations?.liveLocations || []} />
           </div>
         </section>
         <section className='border border-borderColor rounded-md p-5 bg-white shadow-sm'>

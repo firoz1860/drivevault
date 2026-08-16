@@ -147,10 +147,12 @@ const AddCar = () => {
             <label>Location</label>
             <select onChange={e=> setCar({...car, location: e.target.value})} value={car.location} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
               <option value="">Select a location</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
-              <option value="Houston">Houston</option>
-              <option value="Chicago">Chicago</option>
+              <option value="New Delhi">New Delhi</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Kolkata">Kolkata</option>
             </select>
             <p className='text-xs text-gray-400 mt-1'>Location drives the map preview and pickup zone for this listing.</p>
          </div>
@@ -198,7 +200,7 @@ const AddCar = () => {
             <h2 className='text-lg font-medium text-gray-800'>Pickup Map Preview</h2>
             <p className='text-sm text-gray-500'>This updates with the selected car location and links to Google Maps.</p>
           </div>
-          <MapLocationPanel location={car.location || 'New York'} cars={car.location ? [{brand: car.brand || 'DriveVault', model: car.model || 'Preview', location: car.location, lastKnownLocation: {address: car.location}, trackingStatus: 'parked'}] : []} compact={false}/>
+          <MapLocationPanel location={car.location || 'New Delhi'} cars={car.location ? [{brand: car.brand || 'DriveVault', model: car.model || 'Preview', location: car.location, lastKnownLocation: {address: car.location}, trackingStatus: 'parked'}] : []} compact={false}/>
         </div>
       </div>
 

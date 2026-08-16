@@ -54,9 +54,9 @@ const pageContent = {
     title: 'Contact',
     subtitle: 'Reach the DriveVault team for support, partnerships, or fleet onboarding.',
     body: [
-      'Email: mepersonalfiroz@gmail.com',
-      'Phone: +1 234 567890',
-      'Address: 1234 Luxury Drive, San Francisco, CA 94107',
+      'Email: firozahmed709p@gmail.com',
+      'Phone: +91 93157 42128',
+      'Address: 42 Connaught Place, New Delhi, Delhi 110001, India',
     ],
   },
 }

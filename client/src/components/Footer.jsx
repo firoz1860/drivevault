@@ -77,10 +77,10 @@ const Footer = () => {
               Contact
             </h2>
             <ul className="mt-4 flex flex-col gap-2">
-              <li><a className="hover:text-gray-700 transition" href="https://www.google.com/maps?q=1234+Luxury+Drive,+San+Francisco,+CA+94107" target="_blank" rel="noreferrer">1234 Luxury Drive</a></li>
-              <li><Link className="hover:text-gray-700 transition" to="/contact">San Francisco, CA 94107</Link></li>
-              <li><a className="hover:text-gray-700 transition" href="tel:+1234567890">+1 234 567890</a></li>
-              <li><a className="hover:text-gray-700 transition" href="mailto:mepersonalfiroz@gmail.com">mepersonalfiroz@gmail.com</a></li>
+              <li><a className="hover:text-gray-700 transition" href="https://www.google.com/maps/search/?api=1&query=42+Connaught+Place,+New+Delhi,+Delhi+110001" target="_blank" rel="noreferrer">42 Connaught Place</a></li>
+              <li><Link className="hover:text-gray-700 transition" to="/contact">New Delhi, Delhi 110001</Link></li>
+              <li><a className="hover:text-gray-700 transition" href="tel:+919315742128">+91 93157 42128</a></li>
+              <li><a className="hover:text-gray-700 transition" href="mailto:firozahmed709p@gmail.com">firozahmed709p@gmail.com</a></li>
             </ul>
           </div>
         </motion.div>

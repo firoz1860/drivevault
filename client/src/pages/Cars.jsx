@@ -93,7 +93,7 @@ const Cars = () => {
             <h1 className='mt-4 text-4xl font-semibold md:text-5xl'>Find your next car by location, readiness, and total trip fit.</h1>
             <p className='mt-4 text-white/60'>Filter the fleet, compare cars, and see pickup zones before opening details.</p>
           </div>
-          <MapLocationPanel location={pickupLocation || 'New York'} cars={filteredCars.length ? filteredCars : cars} />
+          <MapLocationPanel location={pickupLocation || 'New Delhi'} cars={filteredCars.length ? filteredCars : cars} />
         </div>
 
         <motion.div

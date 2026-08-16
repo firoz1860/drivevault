@@ -54,7 +54,7 @@ const TemplateExperienceShowcase = () => {
         </div>
 
         <div className='mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]'>
-          <MapLocationPanel location={heroCar?.location || 'New York'} cars={cars}/>
+          <MapLocationPanel location={heroCar?.location || 'New Delhi'} cars={cars}/>
           <div className='rounded-lg border border-white/10 bg-white/5 p-5'>
             <h3 className='text-2xl font-semibold'>Premium pickup timeline</h3>
             <div className='mt-6 grid gap-3'>

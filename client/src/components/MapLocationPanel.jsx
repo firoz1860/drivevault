@@ -1,14 +1,16 @@
 import React from 'react'
 
 const cityPins = {
-  'New York': {left: '66%', top: '32%'},
-  'Los Angeles': {left: '18%', top: '58%'},
-  Houston: {left: '48%', top: '68%'},
-  Chicago: {left: '55%', top: '40%'},
+  'New Delhi': {left: '58%', top: '29%'},
+  Mumbai: {left: '31%', top: '63%'},
+  Bengaluru: {left: '39%', top: '80%'},
+  Hyderabad: {left: '48%', top: '64%'},
+  Chennai: {left: '60%', top: '78%'},
+  Kolkata: {left: '79%', top: '50%'},
 }
 
-const MapLocationPanel = ({location = 'New York', cars = [], compact = false}) => {
-  const activePin = cityPins[location] || cityPins['New York']
+const MapLocationPanel = ({location = 'New Delhi', cars = [], compact = false}) => {
+  const activePin = cityPins[location] || cityPins['New Delhi']
   const visibleCars = cars.slice(0, compact ? 2 : 4)
   const googleMapsSrc = `https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`
   const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`
