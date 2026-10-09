@@ -79,14 +79,14 @@ export default function CarScene({ timeline, onFrame, dpr = [1, 2] }) {
             panel background and faint lettering stay visible, as in the reference. */}
         <ContactShadows
           position={[0, 0.001, 0]}
-          opacity={0.42}
-          scale={12}
-          blur={2.4}
-          far={4}
+          opacity={0.5}
+          scale={13}
+          blur={2.2}
+          far={4.5}
           resolution={1024}
-          color="#5b5f61"
+          color="#4c5052"
         />
-        <Environment preset="studio" environmentIntensity={0.5} />
+        <Environment preset="studio" environmentIntensity={0.6} />
       </Suspense>
     </Canvas>
   )

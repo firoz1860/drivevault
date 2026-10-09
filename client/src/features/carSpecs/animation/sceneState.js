@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------------
 
 import { clamp, lerp, lerp3, invLerp, easeInOutCubic, easeInOut } from './easing'
-import { EVENTS, POSE, HOOD_OPEN_ANGLE, DURATION } from './referenceTiming'
+import { EVENTS, POSE, DURATION } from './referenceTiming'
 
 // progress 0 (side profile) -> 1 (specs pose). Ramps up on the way in,
 // holds at 1 across the specs section, ramps back down on the way out.
@@ -80,7 +80,6 @@ export function computeSceneState(timeSeconds) {
   const fov = lerp(POSE.side.fov, POSE.specs.fov, p)
 
   const hood = hoodProgress(t)
-  const hoodAngle = hood * HOOD_OPEN_ANGLE
 
   const originalOpacity = originalUiOpacity(t)
   const specsOpacity = specsUiOpacity(t)
@@ -90,7 +89,7 @@ export function computeSceneState(timeSeconds) {
     phase: phaseAt(t),
     poseProgress: p,
     car: { rotationY: carRotationY, scale: carScale },
-    hood: { progress: hood, angle: hoodAngle },
+    hood: { progress: hood },
     // engine is physically revealed by the hood; expose the same value for UI/debug.
     engineReveal: hood,
     camera: { position: cameraPos, target: cameraTarget, fov },

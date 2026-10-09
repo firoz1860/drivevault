@@ -20,13 +20,13 @@ export const f = (frame) => frame / FPS // frame index -> seconds
 export const EVENTS = {
   originalHold: [f(0), f(48)], //              0.000 - 1.600  side profile, facing left
   uiOut: [f(48), f(54)], //                    1.600 - 1.800  original interface fades/slides out
-  rotateIn: [f(53), f(72)], //                 1.767 - 2.400  car rotates side -> 3/4 front-left
-  hoodOpen: [f(56), f(72)], //                 1.867 - 2.400  hood lifts (cowl hinge), engine revealed
+  rotateIn: [f(50), f(64)], //                 1.667 - 2.133  car rotates side -> 3/4 front-left (early + fast)
+  hoodOpen: [f(51), f(63)], //                 1.700 - 2.100  hood lifts OFF and floats above the bay
   specsIn: [f(58), f(72)], //                  1.933 - 2.400  specs interface fades in
-  specsHold: [f(72), f(117)], //               2.400 - 3.900  hood up, engine shown, specs visible
+  specsHold: [f(72), f(117)], //               2.400 - 3.900  hood floating, engine shown, specs visible
   specsOut: [f(117), f(123)], //               3.900 - 4.100  specs interface fades out
-  hoodClose: [f(120), f(135)], //              4.000 - 4.500  hood lowers, engine re-covered
-  rotateOut: [f(122), f(135)], //              4.067 - 4.500  car rotates 3/4 -> side
+  hoodClose: [f(123), f(138)], //              4.100 - 4.600  hood lowers back onto the bay
+  rotateOut: [f(124), f(138)], //              4.133 - 4.600  car rotates 3/4 -> side
   uiIn: [f(126), f(140)], //                   4.200 - 4.667  original interface fades back in
   endHold: [f(140), f(150)], //                4.667 - 5.000  restored to start (loops cleanly)
 }
@@ -43,16 +43,21 @@ export const POSE = {
     cameraTarget: [0.0, 0.62, 0.0],
     fov: 16,
   },
-  // Specs state (3/4 front-left, slightly elevated, dollied in).
+  // Specs state (elevated 3/4 front-left).
   specs: {
-    carRotationY: Math.PI + 0.6, //      front swings ~35deg toward camera
+    carRotationY: Math.PI + 0.95, //     front swings ~54deg toward camera
     carScale: 1.0,
-    cameraPos: [0.6, 3.4, 13.0],
-    cameraTarget: [0.1, 0.62, 0.0],
+    cameraPos: [0.4, 3.95, 13.6],
+    cameraTarget: [0.0, 0.72, 0.0],
     fov: 18,
   },
 }
 
-// Hood lift angle (radians) about its cowl-edge pivot, fully open.
-// Positive rotation about Z lifts the forward (+X) edge of the hood up.
-export const HOOD_OPEN_ANGLE = 1.0
+// Hood reveal is a LIFT-OFF, not a hinge: the panel translates up (and a little
+// forward) and hovers above the bay with a slight tilt. Measured from the clip
+// (see docs/car-specs/reference-analysis.md, hood-trajectory sheet).
+export const HOOD_LIFT = {
+  up: 0.62, //      metres the panel rises (hovers just above the bay)
+  forward: 0.12, // slight forward drift (+X, toward the front)
+  tilt: 0.1, //     small nose-up tilt (radians about Z)
+}

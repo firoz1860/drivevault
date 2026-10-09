@@ -43,9 +43,14 @@
 | Resolution | 800 × 600 | 800 × 600 | ✅ |
 | Frame rate | 30/1 CFR | 30/1 | ✅ |
 | Frame count | 150 | 150 | ✅ |
-| Duration | 5.000000 s | 5.000000 s | ✅ |
+| Video-stream duration | 5.000000 s | 5.000000 s | ✅ |
 | Codec / pix_fmt | H.264 / yuv420p | H.264 / yuv420p | ✅ |
 | Audio | (omitted — see analysis) | none | intentional |
+
+**Container duration (reported separately, as requested):** the exported MP4's
+container is **5.000 s** (video-only — no audio track). The reference container
+is **5.014 s** because it carries a separate ~5.013 s AAC track; its *video
+stream* is 5.000 s, which is what the export matches frame-for-frame.
 
 Also produced: `car-specs-transition.webm` (VP9) and `poster.png`.
 
@@ -61,19 +66,31 @@ and hierarchy for both states; the faint background lettering behind the car;
 the event sequence and timing (side→3/4 rotation, hood lift + engine reveal,
 specs reveal, symmetric reverse); the clean loop (final ≈ opening).
 
+## Corrections applied in this revision
+
+- **Hood is now a lift-off** (translate up + slight forward + small tilt), not a
+  cowl hinge — this was determined from the hood-trajectory sheet, not assumed.
+- **Rotation onset moved earlier/faster** (starts f50, as the UI fades) to remove
+  the earlier rotation delay; reverse timing nudged to match.
+- **Engine** rebuilt as a prominent chromed injected V8 (velocity stacks + red
+  intake) that reads through the open bay yet stays hidden when the hood is down.
+- **3/4 pose** deepened (more front shown) with higher camera elevation.
+- **Materials** tuned glossier but still clearly black (not mirror); stronger
+  contact shadow.
+
 ## Remaining differences (disclosed honestly)
 
-1. **Car realism** — the hand-built primitive car is a stylized approximation
-   (boxier greenhouse, simpler wheels) versus the sleek photoreal Charger in the
-   reference. This is the single largest visible gap. Fix = drop in a licensed
-   GLB (see `asset-sources.md`); nothing else needs to change.
-2. **3/4-view framing** — the car reads slightly larger / lower in the specs
-   pose than the reference; camera pose numbers are eyeballed, not solved.
-3. **Rotation onset** — begins ~2–3 frames later than the reference at the very
-   start of the move (within ~0.1 s); boundaries are frame-read estimates.
-4. **Background words** — `MUSCLE` / `SPECS` are inferred from partial on-screen
-   glyphs.
-5. **Audio** — the source has a 5.013 s AAC track; intentionally omitted (no
-   licensed asset; the video content is 5.000 s).
+1. **Car realism — the single largest gap.** The car is still a hand-built
+   *stylized primitive* (boxier greenhouse, simpler wheels, no fine chrome/trim)
+   versus the sleek photoreal Charger in the reference. Closing this needs a real
+   detailed Charger model; candidates + blockers are in `asset-sources.md`. The
+   timeline, camera, hood lift, UI, capture and export are all model-agnostic, so
+   a GLB swap needs no other change.
+2. **3/4-view framing** — the car reads slightly larger than the reference in the
+   specs pose; camera numbers are eyeballed, not a solved camera.
+3. **Background words** — `MUSCLE` / `SPECS` inferred from partial on-screen glyphs.
+4. **Audio** — source has a ~5.013 s AAC track; intentionally omitted (no licensed
+   asset; the video content is 5.000 s).
 
-No "pixel-perfect" or "exactly identical" claim is made.
+No "pixel-perfect" or "exactly identical" claim is made — material differences
+(above all the car model) remain.

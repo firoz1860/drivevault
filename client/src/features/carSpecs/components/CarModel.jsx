@@ -18,7 +18,11 @@
 import React, { forwardRef, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
-import { HOOD_OPEN_ANGLE } from '../animation/referenceTiming'
+import { HOOD_LIFT } from '../animation/referenceTiming'
+
+// Hood group's closed-state origin (the cowl edge). The reveal translates the
+// whole panel up/forward from here and adds a slight tilt — it does NOT hinge.
+const HOOD_BASE = [0.45, 1.0, 0]
 
 // Measured / tuned palette (from frame pixel sampling).
 const PAINT = '#15171a'
@@ -34,7 +38,7 @@ const LIGHT_AMBER = '#d79a3a'
 const TAIL_RED = '#8e1410'
 
 const bodyMaterial = (
-  <meshPhysicalMaterial color={PAINT} roughness={0.3} metalness={0.62} clearcoat={0.9} clearcoatRoughness={0.25} />
+  <meshPhysicalMaterial color={PAINT} roughness={0.24} metalness={0.55} clearcoat={1} clearcoatRoughness={0.16} envMapIntensity={0.8} />
 )
 
 function Wheel({ position }) {
@@ -57,38 +61,50 @@ function Wheel({ position }) {
 }
 
 function Engine() {
-  // Raised enough to read clearly through the open bay from the 3/4 view, yet
-  // still cleared by the flush hood when closed (top ~1.0, hood plane ~0.9 +
-  // the hood lifts well before the engine would show from the side).
+  // A blown/injected V8 that reads clearly through the open bay from the 3/4
+  // view (prominent chrome velocity stacks over a red intake), yet stays under
+  // the closed hood plane (~1.0) so it is hidden when the hood is down.
+  const stacks = []
+  for (const x of [-0.26, 0, 0.26]) for (const z of [-0.15, 0.15]) stacks.push([x, z])
   return (
     <group position={[1.25, 0.5, 0]}>
+      {/* block */}
       <mesh castShadow>
-        <boxGeometry args={[1.02, 0.34, 1.0]} />
-        <meshStandardMaterial color={'#3a3f44'} roughness={0.5} metalness={0.8} />
+        <boxGeometry args={[1.04, 0.34, 1.0]} />
+        <meshStandardMaterial color={'#33383d'} roughness={0.45} metalness={0.85} />
       </mesh>
       {/* red valve covers (V) */}
       <mesh position={[0, 0.2, -0.28]} rotation={[0.5, 0, 0]} castShadow>
-        <boxGeometry args={[0.86, 0.14, 0.28]} />
-        <meshStandardMaterial color={ENGINE_RED} roughness={0.35} metalness={0.6} />
+        <boxGeometry args={[0.9, 0.15, 0.3]} />
+        <meshStandardMaterial color={ENGINE_RED} roughness={0.32} metalness={0.6} />
       </mesh>
       <mesh position={[0, 0.2, 0.28]} rotation={[-0.5, 0, 0]} castShadow>
-        <boxGeometry args={[0.86, 0.14, 0.28]} />
-        <meshStandardMaterial color={ENGINE_RED} roughness={0.35} metalness={0.6} />
+        <boxGeometry args={[0.9, 0.15, 0.3]} />
+        <meshStandardMaterial color={ENGINE_RED} roughness={0.32} metalness={0.6} />
       </mesh>
-      {/* prominent red air cleaner with chrome lid */}
-      <mesh position={[0.02, 0.36, 0]} castShadow>
-        <cylinderGeometry args={[0.34, 0.38, 0.2, 36]} />
-        <meshStandardMaterial color={ENGINE_RED} roughness={0.3} metalness={0.7} />
+      {/* red intake manifold */}
+      <mesh position={[0, 0.26, 0]} castShadow>
+        <boxGeometry args={[0.66, 0.14, 0.5]} />
+        <meshStandardMaterial color={ENGINE_RED} roughness={0.3} metalness={0.65} />
       </mesh>
-      <mesh position={[0.02, 0.48, 0]}>
-        <cylinderGeometry args={[0.16, 0.16, 0.07, 28]} />
-        <meshStandardMaterial color={CHROME} roughness={0.18} metalness={0.95} />
-      </mesh>
-      {/* chrome headers */}
-      {[-0.32, 0.32].map((z) => (
-        <mesh key={z} position={[-0.36, -0.04, z]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.55, 16]} />
-          <meshStandardMaterial color={ENGINE_METAL} roughness={0.3} metalness={0.9} />
+      {/* chrome velocity stacks (injector trumpets) */}
+      {stacks.map(([x, z], i) => (
+        <group key={i} position={[x, 0.42, z]}>
+          <mesh castShadow>
+            <cylinderGeometry args={[0.07, 0.055, 0.16, 20]} />
+            <meshStandardMaterial color={CHROME} roughness={0.15} metalness={0.98} />
+          </mesh>
+          <mesh position={[0, 0.09, 0]}>
+            <cylinderGeometry args={[0.085, 0.07, 0.03, 20]} />
+            <meshStandardMaterial color={CHROME} roughness={0.12} metalness={0.98} />
+          </mesh>
+        </group>
+      ))}
+      {/* chrome headers down the sides */}
+      {[-0.34, 0.34].map((z) => (
+        <mesh key={z} position={[-0.38, -0.04, z]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.6, 16]} />
+          <meshStandardMaterial color={ENGINE_METAL} roughness={0.28} metalness={0.92} />
         </mesh>
       ))}
     </group>
@@ -114,9 +130,11 @@ const CarModel = forwardRef(function CarModel({ timeline }, ref) {
 
   useFrame(() => {
     if (!timeline || !hoodPivot.current) return
-    const s = timeline.getState()
-    // negative rotation about Z lifts the forward (+X) edge of the hood.
-    hoodPivot.current.rotation.z = s.hood.progress * HOOD_OPEN_ANGLE
+    const lift = timeline.getState().hood.progress
+    // Lift-off reveal: translate up + slightly forward, with a small nose-up tilt.
+    hoodPivot.current.position.x = HOOD_BASE[0] + HOOD_LIFT.forward * lift
+    hoodPivot.current.position.y = HOOD_BASE[1] + HOOD_LIFT.up * lift
+    hoodPivot.current.rotation.z = HOOD_LIFT.tilt * lift
   })
 
   return (
@@ -202,8 +220,8 @@ const CarModel = forwardRef(function CarModel({ timeline }, ref) {
       </mesh>
       <Engine />
 
-      {/* ---- Hood on its cowl pivot (hinge near windshield base) ---- */}
-      <group ref={hoodPivot} position={[0.45, 1.0, 0]}>
+      {/* ---- Hood: lifts off and floats above the bay (not a hinge) ---- */}
+      <group ref={hoodPivot} position={HOOD_BASE}>
         <Hood />
       </group>
 

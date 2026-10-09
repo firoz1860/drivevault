@@ -29,6 +29,38 @@ into `client/public/car-specs/` and swap `CarModel.jsx` to load it with
 is model-agnostic and needs no change. The missing asset is specifically: a
 rights-cleared 1969 Charger R/T GLB with a separable hood + visible engine.
 
+## Candidate real Charger models (searched — decision pending)
+
+A web search surfaced free 1969 Charger models on Sketchfab. None could be
+confirmed, from listings alone, to have a **separate opening hood + visible
+engine in GLB**, and each has a blocker:
+
+- **CC-BY (commercial OK with credit):** "Dodge Charger 1969" by *Ilya_1392*
+  (~138k tris), "1969 Dodge Charger RT" by *David_Holiday* (~12k tris, no
+  hood/engine detail stated), "Dodge Charger 500 1969" by *Pinkie* (~14k tris),
+  "Dodge Charger 1969 Obj" by *Sxi.Sai* (OBJ — GLB not confirmed).
+- **Non-commercial / NoDerivs (NOT usable here):** *OUTPISTON* R/T (BY-NC-SA,
+  lists a 440 V8), *Ddiaz Design* R/T (BY-NC-SA, derived from NFS Heat),
+  *Alex.Ka.* Daytona customs (BY-NC-ND — cannot modify, so no hood split).
+
+**Blockers before any swap:**
+1. Sketchfab downloads require an interactive login/click — they can't be fetched
+   headlessly from this environment, so a human needs to download the chosen file.
+2. Separate-hood + visible-engine + GLB must be verified per-model (listings don't
+   confirm it); several "free" car models also have questionable license provenance.
+3. Licensing must fit DriveVault's use (CC-BY needs a credit line; NC/ND are out).
+
+**Recommendation:** pick one CC-BY candidate (or provide a model), download the
+GLB, and drop it in; I'll wire it to the existing `timeline`/`hoodPivot`. Until
+then the hand-built car remains as a labelled approximation.
+
+## Spline availability (checked)
+
+The Spline MCP is configured but returned *"No … editor is connected. Open the
+document in the editor, enable the AI bridge, then retry."* — i.e. there is **no
+live Spline scene or asset to inspect**, and no demonstrated fidelity gain over
+R3F. Staying on Three.js/R3F is the correct call for now.
+
 ## Could this be a Spline scene instead?
 
 Yes, as an alternative. Manual Spline setup that would match this analysis:

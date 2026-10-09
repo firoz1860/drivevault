@@ -50,14 +50,23 @@ Boundaries read from extracted frames (`f_###.png`, 1-indexed; frame N below is
 |---|---|---|---|---|
 | Original hold — side profile, car facing **left**, full UI | 0.000 → 1.600 | 0–48 | — | overview rows 1–2 static |
 | Original UI fade/slide out | 1.600 → 1.800 | 48–54 | smoothstep | f48 full → f54 gone |
-| Car rotates side → 3/4 front-left (+ camera dolly/elevate) | 1.767 → 2.400 | 53–72 | easeInOutCubic | transition_in sheet |
-| Hood lifts (cowl hinge, front up) + engine revealed | 1.867 → 2.400 | 56–72 | easeInOutCubic | red engine appears f56→f72 |
+| Car rotates side → 3/4 front-left (+ camera dolly/elevate) | 1.667 → 2.133 | 50–64 | easeInOutCubic | transition_in sheet |
+| Hood **lifts off** and floats above the bay + engine revealed | 1.700 → 2.100 | 51–63 | easeInOutCubic | hood-trajectory sheet (see §3a) |
 | Specs UI fades in | 1.933 → 2.400 | 58–72 | smoothstep | specs text fades in |
 | Specs hold — hood up, engine shown | 2.400 → 3.900 | 72–117 | — | overview rows 3–4 stable |
 | Specs UI fades out | 3.900 → 4.100 | 117–123 | smoothstep | grid fades f117→f123 |
 | Hood closes + car rotates 3/4 → side (+ dolly back) | 4.000 → 4.500 | 120–135 | easeInOutCubic | transition_out sheet |
 | Original UI fades back in | 4.200 → 4.667 | 126–140 | smoothstep | title/price return |
 | End hold — restored to start | 4.667 → 5.000 | 140–150 | — | **f149 ≈ f0** |
+
+### 3a. Hood motion — determined, not assumed
+
+Reading the zoomed hood-trajectory sheet frame by frame: the hood is **not** a
+conventional hinge. As the car turns, the hood panel **translates straight up
+(and slightly forward) and hovers above the engine bay**, staying roughly
+horizontal with a small nose-up tilt — a lifted-component reveal. The
+implementation reproduces this as a translation (`HOOD_LIFT = { up, forward,
+tilt }` in `referenceTiming.js`), **not** a rotation about a cowl/front hinge.
 
 **Boundary behaviour:** the clip is a **smooth, near-symmetric loop** — the last
 decoded frame matches the opening frame. No hard cut or reset. The forward
