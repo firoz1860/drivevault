@@ -259,6 +259,19 @@ This generates a production-ready build inside `/dist`.
 ---
 
 
+## 🎬 Car Specs — Transition (demo feature)
+
+An isolated showcase route at **`/car-specs`** reconstructs the Dribbble
+["Car Specs – Transition"](https://dribbble.com/shots/9685356-Car-Specs-Transition)
+animation (1969 Dodge Charger R/T) with **Three.js / React Three Fiber** driven
+by a single deterministic timeline. It ships code-split (the 3D bundle loads only
+on that route) and does not touch the rental logic.
+
+- Live demo: run the client and open `/car-specs`.
+- Analysis, asset notes, verification, exported MP4/WebM/poster and the
+  reference-vs-output comparison: **[`docs/car-specs/`](docs/car-specs/)**.
+- Reproducible analysis/capture/encode pipeline: **[`scripts/`](scripts/)**.
+
 ## 📄 License
 
 This project is open source and free to use.

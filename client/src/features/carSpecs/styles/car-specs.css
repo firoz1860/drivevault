@@ -1,0 +1,439 @@
+/* ===========================================================================
+   Car Specs – Transition : interface + stage styling
+   Fixed 800x600 reference stage. Tokens sampled from the reference frames.
+   The font is a documented substitution (source unknown) -> Poppins.
+   =========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.cs-root {
+  /* measured palette */
+  --stage-background: #d9dddf;
+  --panel-background: #f8f8f8;
+  --panel-white: #ffffff;
+  --text-primary: #141515;
+  --text-secondary: #5d5f5e;
+  --text-muted: #a9afb2;
+  --background-lettering: #f0f1f1;
+  --button-primary: #596a64;
+  --button-primary-text: #fafafa;
+  --button-secondary: #eef0ef;
+  --divider: #ececed;
+  --green-caption: #5fa863;
+
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--text-primary);
+}
+
+/* ---- Page wrapper (outside the captured stage) ---------------------------- */
+.cs-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 28px 16px 56px;
+  background: #eef0f1;
+  box-sizing: border-box;
+}
+
+/* ---- The 800x600 stage. overflow hidden; nothing escapes the capture. ---- */
+.cs-stage {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  background: var(--stage-background);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+/* Responsive preview: scale the whole composition uniformly (4:3 kept).
+   The outer .cs-stage-fit sets the box; the inner .cs-stage is transform-scaled
+   by JS via --cs-scale. No stretching, no horizontal overflow. */
+.cs-stage-fit {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+.cs-stage-fit .cs-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  transform: scale(var(--cs-scale, 1));
+}
+
+/* ---- White interface panel: 720x400 at (40,100) (measured) --------------- */
+.cs-panel {
+  position: absolute;
+  left: 40px;
+  top: 100px;
+  width: 720px;
+  height: 400px;
+  background: var(--panel-background);
+  overflow: hidden;
+}
+
+/* The 3D canvas sits inside the panel, filling it. */
+.cs-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Interface layers sit above the canvas. */
+.cs-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.cs-ui .cs-interactive {
+  pointer-events: auto;
+}
+
+/* Behind-canvas layer that holds the giant faint lettering. */
+.cs-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--panel-background);
+}
+/* Giant faint background lettering behind the car. */
+.cs-bgword {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 220px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  line-height: 1;
+  color: var(--background-lettering);
+  user-select: none;
+  white-space: nowrap;
+  will-change: opacity;
+}
+
+/* ---- Shared text styles -------------------------------------------------- */
+.cs-top {
+  position: absolute;
+  top: 34px;
+  left: 34px;
+  right: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 11px;
+}
+.cs-top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.cs-top-left .cs-arrow {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+.cs-topnav {
+  display: flex;
+  gap: 34px;
+  color: var(--text-primary);
+  font-size: 11px;
+}
+.cs-topnav span {
+  cursor: pointer;
+}
+
+/* left vehicle switcher */
+.cs-switcher {
+  position: absolute;
+  left: 34px;
+  top: 112px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 150px;
+}
+.cs-switch-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--divider);
+  color: var(--text-muted);
+  font-size: 9.5px;
+  line-height: 1.35;
+}
+.cs-switch-item .cs-arrow {
+  font-size: 12px;
+}
+
+/* lower-left title + price */
+.cs-title {
+  position: absolute;
+  left: 60px;
+  top: 236px;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.12;
+  letter-spacing: 0.2px;
+}
+.cs-price {
+  position: absolute;
+  left: 60px;
+  top: 318px;
+  font-weight: 700;
+  font-size: 26px;
+}
+.cs-price .cs-dollar {
+  font-size: 15px;
+  vertical-align: 18%;
+  margin-right: 2px;
+  font-weight: 600;
+}
+.cs-caption {
+  position: absolute;
+  left: 61px;
+  top: 356px;
+  font-size: 9px;
+  color: var(--green-caption);
+  font-weight: 500;
+}
+
+/* lower-centre quick specs */
+.cs-quickspecs {
+  position: absolute;
+  left: 236px;
+  top: 320px;
+  display: flex;
+  gap: 48px;
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+.cs-quickspecs .cs-col > div {
+  margin-bottom: 10px;
+}
+
+/* lower-right buttons */
+.cs-actions {
+  position: absolute;
+  right: 34px;
+  bottom: 44px;
+  display: flex;
+  gap: 0;
+}
+.cs-btn {
+  border: none;
+  font-family: inherit;
+  font-size: 10px;
+  padding: 0 22px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.cs-btn-secondary {
+  background: var(--button-secondary);
+  color: var(--text-primary);
+}
+.cs-btn-primary {
+  background: var(--button-primary);
+  color: var(--button-primary-text);
+}
+.cs-btn:focus-visible {
+  outline: 2px solid #2f6fe0;
+  outline-offset: 2px;
+}
+
+/* ---- Specs-state specific ------------------------------------------------ */
+.cs-specs-title {
+  position: absolute;
+  left: 34px;
+  top: 30px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.cs-specs-title .cs-arrow {
+  font-size: 15px;
+  margin-top: 2px;
+}
+.cs-specs-title .cs-tt {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.cs-dealer {
+  position: absolute;
+  right: 190px;
+  top: 32px;
+  text-align: right;
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.cs-menu {
+  position: absolute;
+  left: 34px;
+  top: 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.cs-menu .cs-active {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cs-menu .cs-active::before {
+  content: '';
+  width: 16px;
+  height: 1.5px;
+  background: var(--text-primary);
+}
+.cs-desc {
+  position: absolute;
+  left: 34px;
+  top: 300px;
+  width: 176px;
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.cs-grid {
+  position: absolute;
+  left: 238px;
+  top: 300px;
+  right: 34px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  row-gap: 22px;
+  column-gap: 14px;
+}
+.cs-grid .cs-label {
+  font-size: 7px;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.cs-grid .cs-value {
+  font-size: 10px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ---- Fade layers (opacity/transform set imperatively) -------------------- */
+.cs-layer {
+  position: absolute;
+  inset: 0;
+  will-change: opacity, transform;
+}
+
+/* ---- Dev controls (OUTSIDE the stage; hidden during export) -------------- */
+.cs-controls {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  color: #243;
+}
+.cs-controls button {
+  font: inherit;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid #c7ccce;
+  background: #fff;
+  cursor: pointer;
+}
+.cs-controls button:hover {
+  background: #f1f4f5;
+}
+.cs-controls .cs-scrub {
+  flex: 1 1 240px;
+}
+.cs-controls .cs-time {
+  font-variant-numeric: tabular-nums;
+  min-width: 118px;
+}
+.cs-controls .cs-seg {
+  display: inline-flex;
+  border: 1px solid #c7ccce;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.cs-controls .cs-seg button {
+  border: none;
+  border-radius: 0;
+}
+.cs-controls .cs-seg button.cs-on {
+  background: #596a64;
+  color: #fff;
+}
+
+/* When embedded in capture mode, hide chrome and center the raw stage. */
+.cs-capture .cs-controls,
+.cs-capture .cs-pagehead {
+  display: none !important;
+}
+.cs-capture .cs-page {
+  padding: 0;
+  background: transparent;
+}
+
+/* ---- Loading + error (outside the final composition) --------------------- */
+.cs-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  background: var(--stage-background);
+  color: var(--text-secondary);
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  gap: 12px;
+}
+.cs-spinner {
+  width: 26px;
+  height: 26px;
+  border: 3px solid #c3c9cb;
+  border-top-color: #596a64;
+  border-radius: 50%;
+  animation: cs-spin 0.9s linear infinite;
+}
+@keyframes cs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cs-error button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #c7ccce;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Reduced motion: the static poster is shown instead of autoplay (handled in JS). */
+@media (prefers-reduced-motion: reduce) {
+  .cs-spinner {
+    animation: none;
+  }
+}

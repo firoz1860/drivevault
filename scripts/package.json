@@ -1,0 +1,17 @@
+{
+  "name": "car-specs-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only pipeline for the Car Specs - Transition reconstruction: analyse the reference, capture frames from the live app, encode the video, and build comparison sheets. Not part of the client or server bundle.",
+  "scripts": {
+    "analyze": "node analyze-reference.mjs",
+    "capture": "node capture-frames.mjs",
+    "encode": "node encode-video.mjs",
+    "compare": "node compare-frames.mjs"
+  },
+  "devDependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "ffprobe-static": "^3.1.0",
+    "playwright": "^1.48.0"
+  }
+}

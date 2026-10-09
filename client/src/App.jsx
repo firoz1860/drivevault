@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import Navbar from './components/Navbar'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
@@ -14,6 +14,8 @@ import ManageBookings from './pages/owner/ManageBookings'
 import OperationsCenter from './pages/owner/OperationsCenter'
 import RentalSuite from './pages/RentalSuite'
 import MobilityHub from './pages/MobilityHub'
+// Lazy-loaded so the Three.js bundle only ships on the /car-specs route.
+const CarSpecs = lazy(() => import('./pages/CarSpecs'))
 import InfoPage from './pages/InfoPage'
 import Login from './components/Login'
 import { Toaster } from 'react-hot-toast'
@@ -38,6 +40,7 @@ const App = () => {
       <Route path='/my-bookings' element={<MyBookings/>}/>
       <Route path='/rental-suite' element={<RentalSuite/>}/>
       <Route path='/mobility-hub' element={<MobilityHub/>}/>
+      <Route path='/car-specs' element={<Suspense fallback={null}><CarSpecs/></Suspense>}/>
       <Route path='/about' element={<InfoPage page='about'/>}/>
       <Route path='/help-center' element={<InfoPage page='help'/>}/>
       <Route path='/terms' element={<InfoPage page='terms'/>}/>
