@@ -16,6 +16,8 @@ import RentalSuite from './pages/RentalSuite'
 import MobilityHub from './pages/MobilityHub'
 // Lazy-loaded so the Three.js bundle only ships on the /car-specs route.
 const CarSpecs = lazy(() => import('./pages/CarSpecs'))
+// Dev-only fixture harness for the CarDetails spec-reveal integration.
+const RevealFixtures = lazy(() => import('./features/carSpecs/components/RevealFixtures'))
 import InfoPage from './pages/InfoPage'
 import Login from './components/Login'
 import { Toaster } from 'react-hot-toast'
@@ -41,6 +43,7 @@ const App = () => {
       <Route path='/rental-suite' element={<RentalSuite/>}/>
       <Route path='/mobility-hub' element={<MobilityHub/>}/>
       <Route path='/car-specs' element={<Suspense fallback={null}><CarSpecs/></Suspense>}/>
+      {import.meta.env.DEV && <Route path='/dev/car-reveal' element={<Suspense fallback={null}><RevealFixtures/></Suspense>}/>}
       <Route path='/about' element={<InfoPage page='about'/>}/>
       <Route path='/help-center' element={<InfoPage page='help'/>}/>
       <Route path='/terms' element={<InfoPage page='terms'/>}/>

@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import Loader from '../components/Loader'
 import { useAppContext } from '../context/useAppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
-import CarModelViewer, { DEFAULT_CAR_MODEL } from '../components/CarModelViewer'
 import MapLocationPanel from '../components/MapLocationPanel'
+
+// Lazy so the Three.js bundle loads only when the 3D preview is shown.
+const CarSpecReveal = lazy(() => import('../features/carSpecs/components/CarSpecReveal'))
 
 const CarDetails = () => {
   const {id} = useParams()
@@ -17,7 +19,11 @@ const CarDetails = () => {
   const [licenseName, setLicenseName] = useState('')
   const [show3d, setShow3d] = useState(true)
   const currency = import.meta.env.VITE_CURRENCY
-  const model3dUrl = car?.model3d || DEFAULT_CAR_MODEL
+  const revealRef = useRef(null)
+  const reduced = useMemo(
+    () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
+    [],
+  )
 
   const priceSummary = useMemo(() => {
     if (!car || !pickupDate || !returnDate) return {days: 1, base: Number(car?.pricePerDay || 0), fees: 0, discount: 0, total: Number(car?.pricePerDay || 0)}
@@ -86,15 +92,25 @@ const CarDetails = () => {
             transition={{ duration: 0.5 }}
             className='rounded-xl mb-6 shadow-md overflow-hidden bg-light'
           >
-            <div className='flex items-center justify-between px-4 py-3 bg-white border-b border-borderColor'>
+            <div className='flex items-center justify-between gap-2 px-4 py-3 bg-white border-b border-borderColor'>
               <p className='font-medium'>{show3d ? 'Interactive 3D Preview' : 'Vehicle Preview'}</p>
-              <button type='button' onClick={()=> setShow3d(!show3d)} className='px-3 py-1.5 border border-borderColor rounded-md text-sm'>
-                {show3d ? 'Show Image' : 'Show 3D'}
-              </button>
+              <div className='flex items-center gap-2'>
+                {show3d && car.model3d && (
+                  <>
+                    <button type='button' onClick={()=> revealRef.current?.toSpecs()} className='px-3 py-1.5 border border-borderColor rounded-md text-sm'>Specs</button>
+                    <button type='button' onClick={()=> revealRef.current?.reset()} className='px-3 py-1.5 border border-borderColor rounded-md text-sm'>Reset</button>
+                  </>
+                )}
+                <button type='button' onClick={()=> setShow3d(!show3d)} className='px-3 py-1.5 border border-borderColor rounded-md text-sm'>
+                  {show3d ? 'Show Image' : 'Show 3D'}
+                </button>
+              </div>
             </div>
             <div className='h-72 md:h-110'>
               {show3d ? (
-                <CarModelViewer src={model3dUrl} poster={car.image} alt={`${car.brand} ${car.model} 3D model`} />
+                <Suspense fallback={<div className='w-full h-full grid place-items-center bg-light text-sm text-gray-500'>Loading 3D…</div>}>
+                  <CarSpecReveal ref={revealRef} car={car} currency={currency} reduced={reduced} />
+                </Suspense>
               ) : (
                 <img src={car.image} alt="" className='w-full h-full object-cover'/>
               )}
